@@ -9,10 +9,9 @@ class MusicApp;
 }
 QT_END_NAMESPACE
 
+class PlaylistPlayer;
 class MediaLibraryManager;
 class YTDLPInterface;
-class QMediaPlayer;
-class QAudioOutput;
 class MusicApp : public QMainWindow
 {
     Q_OBJECT
@@ -27,13 +26,18 @@ private:
     static constexpr int BROWSA_TAB_IDX = 2;
 
     void Play();
+    void Pause();
+    void Previous();
+    void Next();
     void Download();
+    void SetVolume(int volume);
+
+    void OnTimelineReleased();
     void OnTabChanged(int idx);
 
     Ui::MusicApp *ui;
+    PlaylistPlayer* m_PlaylistPlayer;
     MediaLibraryManager* m_MediaLibraryManager;
     YTDLPInterface* m_YTInterface;
-    QMediaPlayer* m_Player;
-    QAudioOutput* m_Output;
 };
 #endif // MUSICAPP_H

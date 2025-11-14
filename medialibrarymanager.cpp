@@ -15,13 +15,13 @@ MediaLibraryManager::~MediaLibraryManager()
 QStringListModel* MediaLibraryManager::GetSongModel(const QString& playlistName)
 {
     QDir directory(SONG_DIR);
-    if(!playlistName.isEmpty())
+    if(playlistName == "")
     {
+        QStringList songs = directory.entryList(QStringList() << "*.mp3" << "*.WAV" << "*.webm",QDir::Files);
 
+        m_Model->setStringList(songs);
+        return m_Model;
     }
 
-    QStringList songs = directory.entryList(QStringList() << "*.mp3" << "*.WAV",QDir::Files);
-
-    m_Model->setStringList(songs);
     return m_Model;
 }
