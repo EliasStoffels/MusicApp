@@ -6,6 +6,7 @@
 #include <QStringListModel>
 #include "playlistplayer.h"
 #include <QProcess>
+#include "searchresult.h"
 
 MusicApp::MusicApp(QWidget *parent)
     : QMainWindow(parent)
@@ -32,6 +33,8 @@ MusicApp::MusicApp(QWidget *parent)
     connect(this->ui->MainTabWidget,&QTabWidget::currentChanged,this,&MusicApp::OnTabChanged);
     connect(this->ui->VolumeSlider,&QSlider::valueChanged,this,&MusicApp::SetVolume);
     connect(this->ui->TimelineSlider,&QSlider::sliderReleased,this,&MusicApp::OnTimelineReleased);
+
+
 }
 
 MusicApp::~MusicApp()
@@ -87,6 +90,18 @@ void MusicApp::OnTabChanged(int idx)
 
 void MusicApp::Search()
 {
-    m_YTInterface->Search(ui->SearchInput->text());
+    auto results = m_YTInterface->Search(ui->SearchInput->text());
+
+    //add results to widget
+    for(auto result : results)
+    {
+        QListWidgetItem* item = new QListWidgetItem();
+        ui->ResultListWidget->addItem(item);
+        SearchResult* searchResult = new SearchResult(nullptr, &result);
+        //searchResult
+
+        item->setSizeHint(searchResult->sizeHint());
+        ui->ResultListWidget->setItemWidget(item, searchResult);
+    }
 }
 

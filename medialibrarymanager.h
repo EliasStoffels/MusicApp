@@ -7,7 +7,7 @@ class MediaLibraryManager
 {
     inline static const QString PLAYLIST_DIR = "";
     inline static const QString SONG_DIR = "AUDIO";
-    QStringListModel* m_Model;
+    QStringListModel* m_Model = nullptr;
 public:
     MediaLibraryManager();
     ~MediaLibraryManager();

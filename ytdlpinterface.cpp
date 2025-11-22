@@ -6,7 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-
+#include <QListWidget>
 
 YTDLPInterface::YTDLPInterface()
 {
@@ -81,8 +81,9 @@ void YTDLPInterface::SetAudioFormat(const QString& format)
     m_Configs.audioFormat = format;
 }
 
-void YTDLPInterface::Search(const QString& query)
+QVector<YTSearchResult> YTDLPInterface::Search(const QString& query)
 {
+    // make command
     QString ytDlpPath = "YTDLP/yt-dlp.exe";
     QStringList args;
     args << QString("ytsearch5:%1").arg(query)
@@ -90,6 +91,7 @@ void YTDLPInterface::Search(const QString& query)
          << "--flat-playlist"
          << "--dump-json";
 
+    //execute command
     QProcess process;
     process.start(ytDlpPath, args);
     process.waitForFinished();
@@ -97,9 +99,12 @@ void YTDLPInterface::Search(const QString& query)
     QString output = process.readAllStandardOutput();
     QStringList lines = output.split('\n', Qt::SkipEmptyParts);
 
+    QVector<YTSearchResult> results;
     for (const QString &line : lines) {
         QJsonDocument doc = QJsonDocument::fromJson(line.toUtf8());
         if (!doc.isNull() && doc.isObject()) {
+
+            //get json data from result
             QJsonObject obj = doc.object();
             QString title = obj.value("title").toString();
             QString url = obj.value("webpage_url").toString();
@@ -108,16 +113,12 @@ void YTDLPInterface::Search(const QString& query)
             if (!thumbnailArr.isEmpty()) {
                 thumbnail = thumbnailArr.first().toObject().value("url").toString();
             }
-            double duration = obj.value("duration").toDouble();
             QString uploader = obj.value("uploader").toString();
-            qDebug() << title << ":" << url << ":" << thumbnail << ":" << duration << ":" << uploader;
+            double duration = obj.value("duration").toDouble();
+
+            results.emplace_back(title,url,thumbnail,uploader,duration);
         }
     }
 
-    QFile configFile("YTDLP/search.json");
-    if (!configFile.open(QIODevice::WriteOnly  | QIODevice::Text))
-        return;
-
-    QTextStream out(&configFile);
-        out << output << "\n";
+    return results;
 }

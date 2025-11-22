@@ -314,7 +314,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
            <item row="0" column="0">
-            <widget class="QListView" name="ResultsListView"/>
+            <widget class="QListWidget" name="ResultListWidget"/>
            </item>
           </layout>
          </widget>

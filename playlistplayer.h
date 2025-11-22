@@ -8,10 +8,10 @@ class QAbstractItemModel;
 class QItemSelectionModel;
 class PlaylistPlayer
 {
-    QMediaPlayer* m_Player;
-    QAudioOutput* m_Output;
-    QAbstractItemModel* m_Model;
-    QItemSelectionModel* m_Selection;
+    QMediaPlayer* m_Player = nullptr;
+    QAudioOutput* m_Output = nullptr;
+    QAbstractItemModel* m_Model = nullptr;
+    QItemSelectionModel* m_Selection = nullptr;
 
     bool m_IsPaused = false;
 public:

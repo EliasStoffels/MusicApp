@@ -9,6 +9,17 @@ struct YTDLPConfigs
     QString audioFormat; // --audio-format "audioFormat"
 };
 
+struct YTSearchResult {
+    YTSearchResult(const QString& titleStr, const QString& urlStr, const QString& thumbnailStr, const QString& uploaderStr, const double& durationD)
+        : title(titleStr),url(urlStr),thumbnail(thumbnailStr), uploader(uploaderStr), duration(durationD) {}
+    QString title;
+    QString url;
+    QString thumbnail;
+    QString uploader;
+    double duration;
+};
+
+class QListWidget;
 class YTDLPInterface
 {
     // config keys
@@ -26,7 +37,7 @@ public:
     void SetDownloadDir(const QString& dir);
     void SetFileName(const QString& name);
     void SetAudioFormat(const QString& format);
-    void Search(const QString& queary);
+    QVector<YTSearchResult> Search(const QString& queary);
 };
 
 #endif // YTDLPINTERFACE_H
