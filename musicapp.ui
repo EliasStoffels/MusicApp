@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="MainTabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="PlayTab">
        <property name="font">
@@ -76,7 +76,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="2">
-         <widget class="QFrame" name="frame">
+         <widget class="QFrame" name="TimelineFrame">
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
           </property>
@@ -98,7 +98,7 @@
          <widget class="QListWidget" name="PlaylistView"/>
         </item>
         <item row="0" column="2">
-         <widget class="QFrame" name="frame_2">
+         <widget class="QFrame" name="SettingsFrame">
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
           </property>
@@ -114,7 +114,7 @@
             </widget>
            </item>
            <item row="2" column="0" colspan="2">
-            <widget class="QFrame" name="frame_3">
+            <widget class="QFrame" name="VolumeFrame">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -275,6 +275,51 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <attribute name="title">
         <string>Browse</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QFrame" name="SearchFrame">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="SearchButton">
+             <property name="text">
+              <string>Search</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="SearchInput"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QFrame" name="ResultsFrame">
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="0">
+            <widget class="QListView" name="ResultsListView"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

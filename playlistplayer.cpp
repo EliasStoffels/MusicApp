@@ -1,8 +1,8 @@
 #include "playlistplayer.h"
 #include <QtMultimedia>
-#include <QListView>
+#include <QAbstractItemModel>
 
-PlaylistPlayer::PlaylistPlayer(QListView* playlist): m_Playlist(playlist)
+PlaylistPlayer::PlaylistPlayer(QAbstractItemModel* model, QItemSelectionModel* selection) : m_Model(model), m_Selection(selection)
 {
     m_Player = new QMediaPlayer;
     m_Output = new QAudioOutput;
@@ -15,6 +15,12 @@ PlaylistPlayer::~PlaylistPlayer()
     delete m_Output;
 }
 
+void PlaylistPlayer::SetPlaylist(QAbstractItemModel* model, QItemSelectionModel* selection)
+{
+    m_Model = model;
+    m_Selection = selection;
+}
+
 void PlaylistPlayer::Play()
 {
     if(m_IsPaused)
@@ -24,7 +30,7 @@ void PlaylistPlayer::Play()
         return;
     }
 
-    QModelIndex index = m_Playlist->currentIndex();
+    QModelIndex index = m_Selection->currentIndex();
     QString fileLoc = "Audio\\" + index.data(Qt::DisplayRole).toString();
     m_Player->setSource(QUrl::fromLocalFile(fileLoc));
     m_Player->play();
@@ -41,17 +47,16 @@ void PlaylistPlayer::Pause()
 
 void PlaylistPlayer::Previous()
 {
-    QModelIndex current = m_Playlist->currentIndex();
-    int rowCount = m_Playlist->model()->rowCount();
+    QModelIndex current = m_Selection->currentIndex();
+    int rowCount = m_Model->rowCount();
 
     int prevRow = (current.row() - 1);
     if(prevRow < 0)
         prevRow = rowCount -1;
 
-    QModelIndex prevIndex = m_Playlist->model()->index(prevRow, 0);
-    m_Playlist->setCurrentIndex(prevIndex);
-    m_Playlist->selectionModel()->select(prevIndex, QItemSelectionModel::ClearAndSelect);
-    m_Playlist->scrollTo(prevIndex);
+    QModelIndex prevIndex = m_Model->index(prevRow, 0);
+    m_Selection->setCurrentIndex(prevIndex, QItemSelectionModel::ClearAndSelect);
+    m_Selection->select(prevIndex, QItemSelectionModel::ClearAndSelect);
 
     m_IsPaused = false;
     Play();
@@ -59,15 +64,14 @@ void PlaylistPlayer::Previous()
 
 void PlaylistPlayer::Next()
 {
-    QModelIndex current = m_Playlist->currentIndex();
-    int rowCount = m_Playlist->model()->rowCount();
+    QModelIndex current = m_Selection->currentIndex();
+    int rowCount = m_Model->rowCount();
 
     int nextRow = (current.row() + 1) % rowCount;
 
-    QModelIndex nextIndex = m_Playlist->model()->index(nextRow, 0);
-    m_Playlist->setCurrentIndex(nextIndex);
-    m_Playlist->selectionModel()->select(nextIndex, QItemSelectionModel::ClearAndSelect);
-    m_Playlist->scrollTo(nextIndex);
+    QModelIndex nextIndex = m_Model->index(nextRow, 0);
+    m_Selection->setCurrentIndex(nextIndex,QItemSelectionModel::ClearAndSelect);
+    m_Selection->select(nextIndex, QItemSelectionModel::ClearAndSelect);
 
     m_IsPaused = false;
     Play();

@@ -4,18 +4,21 @@
 
 class QMediaPlayer;
 class QAudioOutput;
-class QListView;
+class QAbstractItemModel;
+class QItemSelectionModel;
 class PlaylistPlayer
 {
     QMediaPlayer* m_Player;
     QAudioOutput* m_Output;
-    QListView* m_Playlist;
+    QAbstractItemModel* m_Model;
+    QItemSelectionModel* m_Selection;
 
     bool m_IsPaused = false;
 public:
-    PlaylistPlayer(QListView* playlist);
+    PlaylistPlayer(QAbstractItemModel* model, QItemSelectionModel* selection);
     ~PlaylistPlayer();
 
+    void SetPlaylist(QAbstractItemModel* model, QItemSelectionModel* selection);
     void Play();
     void Pause();
     void Previous();

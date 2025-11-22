@@ -31,6 +31,7 @@ private:
     void Next();
     void Download();
     void SetVolume(int volume);
+    void Search();
 
     void OnTimelineReleased();
     void OnTabChanged(int idx);

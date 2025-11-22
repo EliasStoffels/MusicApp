@@ -5,15 +5,21 @@
 #include "medialibrarymanager.h"
 #include <QStringListModel>
 #include "playlistplayer.h"
+#include <QProcess>
 
 MusicApp::MusicApp(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MusicApp)
 {
-    //initialize variabals
+    //initialize UI
     ui->setupUi(this);
-    m_PlaylistPlayer = new PlaylistPlayer(ui->SongListView);
+
+    //initialize variabals
     m_MediaLibraryManager = new MediaLibraryManager;
+    ui->SongListView->setModel(m_MediaLibraryManager->GetSongModel());
+
+    m_PlaylistPlayer = new PlaylistPlayer(ui->SongListView->model(),ui->SongListView->selectionModel());
+
     m_YTInterface = new YTDLPInterface;
 
     //connect functionality
@@ -22,12 +28,10 @@ MusicApp::MusicApp(QWidget *parent)
     connect(this->ui->PauseButton, &QPushButton::clicked,this,&MusicApp::Pause);
     connect(this->ui->PreviousButton,&QPushButton::clicked,this,&MusicApp::Previous);
     connect(this->ui->NextButton,&QPushButton::clicked,this,&MusicApp::Next);
+    connect(this->ui->SearchButton,&QPushButton::clicked,this,&MusicApp::Search);
     connect(this->ui->MainTabWidget,&QTabWidget::currentChanged,this,&MusicApp::OnTabChanged);
     connect(this->ui->VolumeSlider,&QSlider::valueChanged,this,&MusicApp::SetVolume);
     connect(this->ui->TimelineSlider,&QSlider::sliderReleased,this,&MusicApp::OnTimelineReleased);
-
-    //initialize play tab
-    ui->SongListView->setModel(m_MediaLibraryManager->GetSongModel());
 }
 
 MusicApp::~MusicApp()
@@ -65,10 +69,7 @@ void MusicApp::SetVolume(int volume)
 
 void MusicApp::Download()
 {
-    QString url = ui->LinkInput->toPlainText();
-    QString command = "YTDLP\\yt-dlp.exe \""+ url + "\"";
-
-    system(command.toUtf8().constData());
+    m_YTInterface->Download(ui->LinkInput->toPlainText(),"");
 }
 
 void MusicApp::OnTimelineReleased()
@@ -82,5 +83,10 @@ void MusicApp::OnTabChanged(int idx)
     {
         ui->SongListView->setModel(m_MediaLibraryManager->GetSongModel());
     }
+}
+
+void MusicApp::Search()
+{
+    m_YTInterface->Search(ui->SearchInput->text());
 }
 

@@ -26,6 +26,7 @@ public:
     void SetDownloadDir(const QString& dir);
     void SetFileName(const QString& name);
     void SetAudioFormat(const QString& format);
+    void Search(const QString& queary);
 };
 
 #endif // YTDLPINTERFACE_H
