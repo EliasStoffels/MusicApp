@@ -10,7 +10,7 @@ jobs:
         run: |
           mkdir "hello-world"
           cd "hello-world"
-          type nul > test.txt
+          New-Item -Path "test.txt" -ItemType File
          
       - name: upload artifact
         uses: actions/upload-artifact@v4
