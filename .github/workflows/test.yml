@@ -3,18 +3,18 @@ run-name: running test
 on: [push]
 jobs:
   create-a-file:
-    runs-on: windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
       - name: create file
-         run:|
-         mkdir "hello-world"
-         cd "hello-world"
-         type nul > test.txt
+        run: |
+          mkdir "hello-world"
+          cd "hello-world"
+          type nul > test.txt
          
       - name: upload artifact
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
-         name: test-artifact
-         path: "hello-world"
+          name: test-artifact
+          path: "hello-world"
          
